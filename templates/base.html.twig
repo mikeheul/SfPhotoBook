@@ -10,7 +10,6 @@
             <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
             <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% endblock %}
-
     </head>
     <body>
         <header>
@@ -22,7 +21,6 @@
                         <span>Your favorite shootings booking</span>
                     </a>
                 </div>
-                {# <div class="username">{{ (app.user) ? app.user.pseudo : "" }}</div> #}
                 <div class="links">
                     <ul>
                     {% if app.user %}
@@ -40,8 +38,8 @@
                     {% endif %} 
                 </div>
                 
+                <!-- Menu burger -->
                 <div class="burger"><i class="fa-solid fa-burger"></i></div>
-
                 <div id="myNav" class="menuOverlay">
                     <a href="javascript:void(0)" class="closebtn">&times;</a>
                     <div class="overlay-content">
