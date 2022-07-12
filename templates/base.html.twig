@@ -7,11 +7,38 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+            <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
             <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
             <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% endblock %}
     </head>
     <body>
+
+        {# read and display just one flash message type #}
+        {# {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+        {% endfor %} #}
+
+        {# read and display several types of flash messages #}
+        {# {% for label, messages in app.flashes(['success', 'warning']) %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% endfor %} #}
+
+        {# read and display all flash messages #}
+        {# {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% endfor %} #}
+
         <header>
             {% set class = (app.user) ? "logged" : "" %}
             <nav class="{{ class }}">
@@ -76,6 +103,8 @@
                 integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
                 crossorigin="anonymous">
         </script>
+        <script src="//code.jquery.com/jquery.js"></script>
+        <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
         <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
             tinymce.init({
@@ -86,6 +115,7 @@
         
         {% block javascripts %}{% endblock %}
         
+        {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
         <script src="{{ asset('js/script.js') }}"></script>
     </body>
 </html>

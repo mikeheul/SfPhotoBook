@@ -7,14 +7,15 @@ use App\Entity\Shooting;
 use App\Form\PackageType;
 use App\Form\ShootingType;
 use App\Entity\ShootingBook;
+use App\Entity\ShootingLike;
 use App\Entity\ShootingImages;
 use App\Entity\ShootingComments;
-use App\Entity\ShootingLike;
 use App\Form\ShootingCommentType;
 use App\Form\ShootingBookFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\ShootingLikeRepository;
 use Symfony\Component\HttpFoundation\Request;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -27,14 +28,16 @@ class ShootingController extends AbstractController
      * @Route("/shooting/add", name="add_shooting")
      * @Route("/shooting/{id}/edit", name="edit_shooting")
      */
-    public function add(ManagerRegistry $doctrine, Shooting $shooting = null, Request $request, SluggerInterface $slugger): Response
+    public function add(FlashyNotifier $flashy, ManagerRegistry $doctrine, Shooting $shooting = null, Request $request, SluggerInterface $slugger): Response
     {
+        $edit = true;
         if($shooting && $shooting->getOwner() !== $this->getUser()) {
            return $this->redirectToRoute('app_home');
         } else {
             $entityManager = $doctrine->getManager();
             if(!$shooting) {
                 $shooting = new Shooting();
+                $edit = false;
             }
     
             $form = $this->createForm(ShootingType::class, $shooting);
@@ -60,6 +63,9 @@ class ShootingController extends AbstractController
                 $shooting->setCreatedAt(new \DateTime());
                 $entityManager->persist($shooting);
                 $entityManager->flush();
+
+                $confirm = ($edit) ? "updated" : "added";
+                $flashy->success("Shooting well ". $confirm. " !");
     
                 return $this->redirectToRoute('show_shooting', ['id' => $shooting->getId()]);
             }
@@ -75,7 +81,7 @@ class ShootingController extends AbstractController
     /**
      * @Route("delete/image/{id}", name="delete_image_shooting")
      */
-    public function deleteImage(ManagerRegistry $doctrine, ShootingImages $shootingImage, Request $request) {
+    public function deleteImage(FlashyNotifier $flashy, ManagerRegistry $doctrine, ShootingImages $shootingImage, Request $request) {
         
         if($shootingImage->getShooting()->getOwner() !== $this->getUser()) {
             return $this->redirectToRoute('app_home');
@@ -85,6 +91,8 @@ class ShootingController extends AbstractController
             $em = $doctrine->getManager();
             $em->remove($shootingImage);
             $em->flush();
+
+            $flashy->success('Image deleted successfully !');
     
             return $this->redirectToRoute('show_shooting', ['id' => $shootingImage->getShooting()->getId()]);
         }
@@ -93,26 +101,31 @@ class ShootingController extends AbstractController
     /**
      * @Route("add_package/{id}", name="add_package_shooting")
      */
-    public function addPackage(ManagerRegistry $doctrine, Shooting $shooting, Request $request) {
+    public function addPackage(FlashyNotifier $flashy, ManagerRegistry $doctrine, Shooting $shooting, Request $request) {
 
-        $package = new Package();
-        $form = $this->createForm(PackageType::class, $package);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            $package = $form->getData();
-            $package->setShooting($shooting);
-            $em = $doctrine->getManager();
-            $em->persist($package);
-            $em->flush();
+        if($shooting->getOwner() !== $this->getUser()) {
+            $flashy->error('Unauthorized action !');
+            return $this->redirectToRoute('app_home');
+        } else {
+            $package = new Package();
+            $form = $this->createForm(PackageType::class, $package);
+            $form->handleRequest($request);
+        
+            if ($form->isSubmitted() && $form->isValid()) {
+                $package = $form->getData();
+                $package->setShooting($shooting);
+                $em = $doctrine->getManager();
+                $em->persist($package);
+                $em->flush();
 
-            return $this->redirectToRoute('show_shooting', ['id' => $shooting->getId()]);
+                return $this->redirectToRoute('show_shooting', ['id' => $shooting->getId()]);
+            }
+
+            return $this->render('shooting/add_package_shooting.html.twig', [
+                "formAddPackageShooting" => $form->createView(),
+                "shooting" => $shooting
+            ]);
         }
-
-        return $this->render('shooting/add_package_shooting.html.twig', [
-            "formAddPackageShooting" => $form->createView(),
-            "shooting" => $shooting
-        ]);
     }
 
     /**
@@ -165,15 +178,14 @@ class ShootingController extends AbstractController
     /**
      * @Route("shooting/{id}/like", name="shooting_like")
      */
-    public function like(Shooting $shooting, ManagerRegistry $doctrine, ShootingLikeRepository $sr): Response
+    public function like(FlashyNotifier $flashy, Shooting $shooting, ManagerRegistry $doctrine, ShootingLikeRepository $sr): Response
     {
         $em = $doctrine->getManager();
-
         $user = $this->getUser();
 
         if(!$user) return $this->json([
             'code' => 403,
-            'message' => 'Unauthorized'
+            'message' => $flashy->error('You have to login !')
         ], 403);
 
         if($shooting->isLikedByUser($user)) {
@@ -185,9 +197,10 @@ class ShootingController extends AbstractController
             $em->remove($like);
             $em->flush();
 
+
             return $this->json([
                 'code' => 200,
-                'message' => 'Like well deleted',
+                'message' => $flashy->success('Like well deleted !'),
                 'likes' => $sr->count(['shooting' => $shooting])
             ], 200);
         }
@@ -201,7 +214,7 @@ class ShootingController extends AbstractController
 
         return $this->json([
             'code' => 200, 
-            'message' => 'Like well added',
+            'message' => $flashy->success('Like added successfully !'),
             'likes' => $sr->count(['shooting' => $shooting])
         ], 200);
     }
