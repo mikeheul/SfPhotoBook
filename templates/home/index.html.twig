@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PHOTOBOOK - Home{% endblock %}
+
+{% block body %}
+    <div class="heading-jumbo">
+        <h1><i class="fa-solid fa-camera-retro"></i> PhotoBook</h1>
+        <p>Don't be afraid. Everything is under control.</p>
+        <div class="socials">
+            <a href=""><i class="fa-brands fa-facebook-f"></i></a>
+            <a href=""><i class="fa-brands fa-instagram"></i></a>
+            <a href=""><i class="fa-brands fa-twitter"></i></a>      
+        </div>
+    </div>
+
+    <div class="search js-filter" id="search">
+        <h4>Find your shooting</h4>
+        <div class="js-filter-form">
+            {{ form_start(formSearch) }}
+            <div class="search-items">
+                <a class="reset" href="{{ path('app_home') }}#shootings"><i class="fa-solid fa-arrows-rotate"></i></a>
+                {{ form_row(formSearch.q) }}
+                {{ form_row(formSearch.min) }}
+                {{ form_row(formSearch.max) }}
+                <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            {{ form_end(formSearch) }}
+        </div>
+    </div>
+
+    <section class="shootings">
+        <h1>Let's choose a Shooting !</h1>
+    
+        <div class="shootings-list js-filter-content" id="anchor-pagination">
+            <div class="row">
+                {# Boucler sur les shootings actifs (isActive) #}
+                {% include "home/_shootings.html.twig" %}
+        </div>
+    </section>
+
+    <section class="testimonials parallax parallax-bg1">
+        <h1>Testimonials</h1>
+    </section>
+
+    <section class="">
+        <p style="text-align: center;">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe molestias autem ex ea voluptate! Libero expedita quaerat corrupti pariatur sit deserunt inventore quod? Cumque saepe provident consectetur laudantium velit molestias.</p>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function onClickBtnLike(event) {
+            event.preventDefault();
+
+            const url = this.href;
+            const spanCount = this.querySelector('span.js-likes');
+            const icon = this.querySelector('i');
+
+            axios.get(url)
+                .then(function(response) {
+                    spanCount.textContent = response.data.likes;
+                    if(icon.classList.contains('fa-solid')) {
+                        icon.classList.replace('fa-solid', 'fa-regular');
+                        icon.classList.replace('red-heart', 'gray-heart');
+                    } else {
+                        icon.classList.replace('fa-regular', 'fa-solid')
+                        icon.classList.replace('gray-heart', 'red-heart')
+                    }
+                })
+                .catch(function(error) {
+                    if(error.response.status = 403) {
+                        window.alert("You can't like a shooting if you are not logged in");
+                    } else {
+                        window.alert("Error");
+                    }
+                })
+        }
+
+        document.querySelectorAll("a.js-like").forEach(function(link){
+            link.addEventListener('click', onClickBtnLike)
+        });
+
+    </script>
+
+    <!--<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script> -->
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            //effect: "coverflow",
+            loop: true,
+            speed: 800,
+            /*autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },*/
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true,
+                /*renderBullet: function (index, className) {
+                    return '<span class="' + className + '">' + (index + 1) + "</span>";
+                },*/
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>
+
+    <script>
+        window.location = (""+window.location).replace(/#[A-Za-z0-9_]*$/,'')+"#search"
+    </script>
+{% endblock %}
+

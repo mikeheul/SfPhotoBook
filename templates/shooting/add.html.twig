@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PHOTOBOOK - Shooting{% endblock %}
+
+{% block body %}
+
+<section class="add-edit-shooting">
+    {% if edit %}
+        <h1>Edit a Shooting</h1>
+    {% else %}
+        <h1>Add a Shooting</h1>
+    {% endif %}
+
+    {{ form_start(formAddShooting) }}
+        {{ form_row(formAddShooting.title) }}
+        {{ form_row(formAddShooting.description) }}
+        {{ form_row(formAddShooting.price) }}
+        {{ form_row(formAddShooting.isActive) }}
+
+        {# <div class="" id="files_list" data-prototype="{{ form_widget(formAddShooting.shootingImages.vars.prototype)| e('html_attr') }}">
+            {% for row in formAddShooting.shootingImages %}
+                <div class="card">   
+                    <div class="card-body">
+                        {{ form_row(row) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div> #}
+    {{ form_end(formAddShooting) }}
+
+    {# {{ form(formAddShooting) }} #}
+
+    <div class="shooting-images">
+        {% for img in shooting.shootingImages %}
+        <div class="shooting-image-item">
+            <img src="{{ asset('uploads/images/' ~ img.url) }}" alt="">
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

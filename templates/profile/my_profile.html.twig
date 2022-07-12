@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PHOTOBOOK - My Profile{% endblock %}
+
+{% block body %}
+
+    <section class="user-shootings-wrapper">
+        <h1>My Shootings</h1>
+        <section class="user-shootings">
+            {% for shooting in shootings %}
+                <div class="user-shooting-item">
+                    <a href="{{ path('show_shooting', {'id': shooting.id}) }}" >
+                        <div class="user-shooting-item-img">
+                            <img src="{{ asset('uploads/images/' ~ shooting.shootingImages[0].url) }}" alt="">
+                        </div>
+                    </a>
+                    <div class="user-shooting-item-text">
+                        {{ shooting.title }}
+                    </div>
+                    <div class="user-shooting-item-actions">
+                        <a class="js-view active" href="{{ path('active_shooting', {'id': shooting.id }) }}">
+                        {% if shooting.isActive %}
+                            <i class="fa-regular fa-eye green-eye"></i>
+                        {% else %}
+                            <i class="fa-regular fa-eye-slash red-eye"></i>    
+                        {% endif %}        
+                        </a>
+                        <a class="edit" href="{{ path('edit_shooting', {'id': shooting.id}) }}"><i class="fa-solid fa-pen"></i></a>
+                        <a class="delete" href=""><i class="fa-regular fa-trash-can"></i></a>
+                    </div>
+                </div>
+                {% endfor %}
+        </section>
+    </section>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function onClickBtnView(event) {
+            event.preventDefault();
+
+            const url = this.href;
+            const icon = this.querySelector('i');
+            const active = document.querySelectorAll('.active-shooting');
+
+            axios.get(url)
+                .then(function(response) {
+                    console.log(response);
+                    if(icon.classList.contains('fa-eye')) {
+                        icon.classList.replace('fa-eye', 'fa-eye-slash');
+                        icon.classList.replace('green-eye','red-eye')
+                    } else {
+                        icon.classList.replace('fa-eye-slash', 'fa-eye')
+                        icon.classList.replace('red-eye','green-eye')
+                    }
+                })
+                .catch(function(error) {
+                    if(error.response.status = 403) {
+                        window.alert("You can't like a shooting if you are not logged in");
+                    } else {
+                        window.alert("Error");
+                    }
+                })
+        }
+
+        document.querySelectorAll("a.js-view").forEach(function(link){
+            link.addEventListener('click', onClickBtnView)
+        });
+
+    </script>
+{% endblock %}

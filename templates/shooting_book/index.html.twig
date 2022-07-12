@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PHOTOBOOK - My Requests{% endblock %}
+
+{% block body %}
+    <section class="requests-list">
+        <h1>My requests</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Request Date</th>
+                    <th>User</th>
+                    <th>Message</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Accept / Decline</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for shooting in app.user.shootings %}
+                {% for shootingBook in shooting.shootingBooks %}
+                    {% set endDate = (shootingBook.endDate is not null) ? shootingBook.endDate | date('d-m-Y H:i') : "Aucune date de fin" %}
+                    <tr>
+                        <td>{{ shootingBook.createdAt | date('d-m-Y') }}</td>
+                        <td>{{ shootingBook.bookUser.pseudo }}</td>
+                        <td>{{ shootingBook.message | raw }}</td>
+                        <td>{{ shootingBook.startDate | date('d-m-Y') }}</td>
+                        <td>{{ endDate }}</td>
+                        <td>
+                            <a href="" class="btn btn-ok">Accept</a>
+                            <a href="" class="btn btn-ko">Decline</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

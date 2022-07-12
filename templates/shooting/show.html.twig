@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PHOTOBOOK - Shooting{% endblock %}
+
+{% block body %}
+    <section class="shooting-show">
+        <div class="shooting-heading">
+            {# Droits d'édition pour le propriétaire du shooting #}
+            {% if app.user == shooting.owner %}
+            <div class="button-edit-shooting">
+                <a href="{{ path('edit_shooting', {'id': shooting.id}) }}">Edit</a>
+                <a href="{{ path('add_package_shooting', {'id': shooting.id}) }}">Add package</a>
+            </div>
+            {% endif %}
+
+            {# title #}
+            <h1>{{ shooting.title}}</h1>
+            {% set plur = shooting.shootingComments | length > 1 ? "s" : "" %}
+            {# nbComments #}
+            <span><i class="fa-solid fa-comment-dots"></i> {{ shooting.shootingComments | length }} comment{{ plur }}</span><br>
+            {# photographe #}
+            <span class="shooting-owner">By {{ shooting.owner.pseudo }}</span><br>
+            {# description #}
+            <p class="shooting-description">
+                {% autoescape %}
+                    {{ shooting.description | raw }}</p> 
+                {% endautoescape %}
+                
+            {# booking #}
+            <a href="" class="btn propose">Book this shooting</a>
+            <div class="book-planner">
+                {{ form(formShootingBook) }}
+            </div>
+        </div>
+    
+        {# gallery #}
+        <h2>Gallery</h2>
+        <div class="shooting-images">
+        {# Afficher les images de la galerie #}
+        {% for image in shooting.shootingImages %}
+            <div class="shooting-image-item">
+                <img src="{{ asset('uploads/images/' ~ image.url) }}" alt="">
+                <a href="#img{{ loop.index }}">
+                    <div class="overlay-zoom">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </a>
+                <div class="lightbox" id="img{{ loop.index }}">
+                    <a href="#_"><img src="{{ asset('uploads/images/' ~ image.url) }}" alt=""></a>
+                </div>
+                {# supprimer l'image si on est propriétaire du shooting #}
+                {% if app.user.id == shooting.owner.id %}
+                <div class="image-supp">
+                    <a href="{{ path('delete_image_shooting', {'id': image.id}) }}"><ion-icon name="trash-bin-outline"></ion-icon></a>
+                </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+
+        {# packages #}
+        <h2>Packages</h2>
+        <div class="packages">
+            {# Afficher les packages #}
+            {% for package in shooting.packages %}
+            <div class="package-item">
+                {# nbHours #}
+                <h3>{{ package.hours }}h</h3>
+                {# nbPhotos #}
+                <p>{{ package.nbPhotos }} retouched photos</p>
+                {# price #}
+                <p class="price">$ {{ package.price }}</p>
+                {# Droits d'édition / suppression du package #}
+                {% if app.user == shooting.owner %}
+                <div class="edit-delete">
+                    <a href=""><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href=""><i class="fa-solid fa-trash-can"></i></a>
+                </div>   
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    
+        {# comments #}
+        <h2>Comments ({{ shooting.shootingComments | length }})</h2>
+        <div class="shooting-comments">
+        {# Si pas de commentaires #}
+        {% if shooting.shootingComments | length == 0 %}
+            <p>No comments...</p>
+        {% else %}
+            {# Lister les commentaires (du + récent au + ancien) #}
+            {% for comment in shooting.shootingComments %}
+                <div class="comment-item">
+                    <h4>
+                        {# pseudo #}
+                        {{ comment.userComment.pseudo }}
+                        {# Editer si auteur du message #}
+                        {% if comment.userComment.id == app.user.id %}
+                        <div class="comment-edit">
+                            <a href=""><ion-icon name="close-circle-outline"></ion-icon></ion-icon></a>
+                        </div>
+                        {% endif %} <br>
+                    </h4>
+                    {# date du message #}
+                    <p class="comment-date">{{ comment.createdAt | date('d-m-Y H:i') }}</p>
+                    {# texte du message #}
+                    <p class="comment-text">
+                        {% autoescape %}
+                            {{ comment.message | raw }}</p> 
+                        {% endautoescape %}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+
+        {# Laisser un commentaire #}
+        <h2>Leave a comment about this shooting</h2>
+        {{ form(formShootingComments) }}
+    </div>
+
+{% endblock %}

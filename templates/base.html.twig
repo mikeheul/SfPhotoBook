@@ -4,16 +4,65 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            {% set class = (app.user) ? "logged" : "" %}
+            <nav class="{{ class }}">
+                <div class="logo">
+                    <a href="{{ path('app_home') }}">PhotoBook <br><span>Your favorite shootings booking</span></a>
+                </div>
+                {# <div class="username">{{ (app.user) ? app.user.pseudo : "" }}</div> #}
+                <div class="links">
+                    <ul>
+                    {% if app.user %}
+                        {% if is_granted('ROLE_PHOTOGRAPHER') %}
+                            <li class=""><a href="{{ path('app_user') }}">My Shootings</a></li>
+                            <li><a href="{{ path('app_shooting_book') }}">My Requests</a></li>
+                            <li class="add-shooting"><a href="{{ path('add_shooting') }}">Add Shooting</a></li>
+                        {% endif %}
+                        <li><a href="{{ path('app_logout') }}"><i class="fa-solid fa-power-off red"></i></a></li>
+                    </ul>
+                    {% else %}
+                        <li><a href="{{ path('app_register') }}">Register</a></li>
+                        <li><a href="{{ path('app_login') }}"><i class="fa-solid fa-power-off green"></i></a></li>
+                    </ul>
+                    {% endif %} 
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        
+        {% block javascripts %}
+            <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+            <script
+                src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+                crossorigin="anonymous">
+            </script>
+            <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+            <script>
+                tinymce.init({
+                  selector: 'textarea'
+                });
+            </script>
+            <script src="{{ asset('js/script.js') }}"></script>
+
+        {% endblock %}
+        {% if app.user %}
+            <footer>
+                <p>&copy; Micka - PhotoBook</p>
+            </footer>
+        {% endif %}
     </body>
 </html>
