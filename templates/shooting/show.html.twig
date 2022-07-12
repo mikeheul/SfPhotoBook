@@ -120,3 +120,15 @@
     </div>
 
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        let buttonPropose = document.querySelector(".propose");
+        let divBookPlanner = document.querySelector(".book-planner");
+        
+        buttonPropose.addEventListener("click", (e) => {
+            e.preventDefault();
+            divBookPlanner.classList.toggle('active')
+        })
+    </script>
+{% endblock %}
