@@ -49,6 +49,11 @@ class ShootingBook
      */
     private $endDate;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isAccepted;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +127,18 @@ class ShootingBook
     public function setEndDate(?\DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    public function isIsAccepted(): ?bool
+    {
+        return $this->isAccepted;
+    }
+
+    public function setIsAccepted(bool $isAccepted): self
+    {
+        $this->isAccepted = $isAccepted;
 
         return $this;
     }
