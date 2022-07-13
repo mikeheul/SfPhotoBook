@@ -22,3 +22,4 @@ Major features :
 - Pagination (KnpPaginator)
 - Photo gallery with lightbox
 - Comments (TinyMCE)
+- Flash messages (Flashy Bundle)
