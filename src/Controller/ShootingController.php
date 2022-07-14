@@ -32,7 +32,8 @@ class ShootingController extends AbstractController
     {
         $edit = true;
         if($shooting && $shooting->getOwner() !== $this->getUser()) {
-           return $this->redirectToRoute('app_home');
+            $flashy->error("Not allowed !");
+            return $this->redirectToRoute('app_home');
         } else {
             $entityManager = $doctrine->getManager();
             if(!$shooting) {
