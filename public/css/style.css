@@ -656,7 +656,7 @@ label {
   font-size: 13px;
   line-height: 10px;
   color: #fff;
-  background: rgb(134, 134, 134);
+  background: rgb(255, 180, 75);
   border-radius: 5px;
 }
 .shooting-myitem-text .title-favorite {
@@ -1261,13 +1261,30 @@ footer p {
     flex-direction: column;
     width: 100%;
   }
+  .user-shooting-item {
+    width: 100%;
+  }
 }
 @media (max-width: 425px) {
   .logo {
     display: none;
   }
+  h1 {
+    font-size: 200% !important;
+  }
   nav {
-    flex-direction: column;
+    padding: 0;
+  }
+  nav.logged.sticky {
+    background: #fff;
+    height: auto;
+  }
+  nav.logged {
+    background: #fff;
+    height: auto;
+  }
+  nav.logged .burger {
+    color: #000;
   }
 }
 @media (max-width: 400px) {
