@@ -54,6 +54,12 @@ class ShootingBook
      */
     private $isAccepted;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Package::class, inversedBy="shootingBooks")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $package;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -139,6 +145,18 @@ class ShootingBook
     public function setIsAccepted(bool $isAccepted): self
     {
         $this->isAccepted = $isAccepted;
+
+        return $this;
+    }
+
+    public function getPackage(): ?Package
+    {
+        return $this->package;
+    }
+
+    public function setPackage(?Package $package): self
+    {
+        $this->package = $package;
 
         return $this;
     }

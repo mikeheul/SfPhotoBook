@@ -42,10 +42,7 @@ class ShootingBookRepository extends ServiceEntityRepository
     }
 
     public function findBookings($id) {
-        
         $qb = $this->createQueryBuilder('sb');
-        
-           
     }
 
 //    /**

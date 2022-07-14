@@ -66,6 +66,18 @@
   --swiper-theme-color: #fff;
 }
 
+.red {
+  color: #F55050;
+}
+
+.green {
+  color: #297a3c;
+}
+
+.orange {
+  color: rgb(255, 156, 57);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -238,6 +250,21 @@ label {
   padding: 10px;
 }
 
+.calendar {
+  width: 100%;
+  margin: auto;
+  margin-bottom: 50px;
+}
+.calendar table th {
+  text-align: center;
+  background: rgb(215, 215, 215);
+  color: #000;
+  padding: 5px;
+}
+.calendar table td {
+  padding: 5px;
+}
+
 .row {
   height: 100%;
   display: flex;
@@ -337,6 +364,12 @@ label {
 
 .btn.btn-ko {
   background: rgb(188, 88, 88);
+  font-size: 12px;
+  margin: 0;
+}
+
+.btn.btn-info {
+  background: rgb(19, 108, 140);
   font-size: 12px;
   margin: 0;
 }
@@ -480,6 +513,10 @@ label {
 }
 .search .search-items .reset:hover {
   background: rgb(167, 167, 167);
+}
+.search .search-items .input-width {
+  display: flex;
+  gap: 10px;
 }
 
 .shootings {
@@ -1121,9 +1158,12 @@ footer p {
 @media (max-width: 1150px) {
   .search {
     transform: translateY(10%);
+    width: 100%;
+    margin: 0;
     box-shadow: none;
   }
   .search .search-items {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -1139,7 +1179,6 @@ footer p {
     margin-left: 0;
   }
   .search .search-items input {
-    min-width: 100%;
     margin: 0;
   }
 }
@@ -1162,6 +1201,10 @@ footer p {
   }
   nav .burger {
     display: inline-block;
+  }
+  .input-width {
+    flex-direction: column;
+    width: 100%;
   }
 }
 @media (max-width: 425px) {

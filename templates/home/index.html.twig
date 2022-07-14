@@ -19,9 +19,11 @@
             {{ form_start(formSearch) }}
             <div class="search-items">
                 <a class="reset" href="{{ path('app_home') }}#shootings"><i class="fa-solid fa-arrows-rotate"></i></a>
-                {{ form_row(formSearch.q) }}
-                {{ form_row(formSearch.min) }}
-                {{ form_row(formSearch.max) }}
+                <div class="input-width">
+                    {{ form_row(formSearch.q) }}
+                    {{ form_row(formSearch.min) }}
+                    {{ form_row(formSearch.max) }}
+                </div>
                 <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             {{ form_end(formSearch) }}

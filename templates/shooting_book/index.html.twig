@@ -9,7 +9,9 @@
         <table>
             <thead>
                 <tr>
+                    <th>Status</th>
                     <th>Request Date</th>
+                    <th>Shooting / Package</th>
                     <th>User</th>
                     <th>Message</th>
                     <th>Start Date</th>
@@ -22,19 +24,66 @@
                 {% for shootingBook in shooting.shootingBooks %}
                     {% set endDate = (shootingBook.endDate is not null) ? shootingBook.endDate | date('d-m-Y H:i') : "Aucune date de fin" %}
                     <tr>
+                        <td>
+                            {% if shootingBook.isAccepted %}
+                                <i class="green fa-solid fa-circle-check"></i>
+                            {% else %}
+                                <i class="orange fa-solid fa-circle-pause"></i>
+                            {% endif %}
+                        </td>
                         <td>{{ shootingBook.createdAt | date('d-m-Y') }}</td>
+                        <td><strong>{{ shootingBook.shooting.title }}</strong><br>{{ shootingBook.package }}</td>
                         <td>{{ shootingBook.bookUser.pseudo }}</td>
                         <td>{{ shootingBook.message | raw }}</td>
                         <td>{{ shootingBook.startDate | date('d-m-Y') }}</td>
                         <td>{{ endDate }}</td>
                         <td>
-                            <a href="" class="btn btn-ok">Accept</a>
-                            <a href="" class="btn btn-ko">Decline</a>
+                            {% if shootingBook.isAccepted %}
+                                <a class="btn btn-info" href="{{ shootingBook.bookUser.id }}">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('app_shooting_book_accept', {'id': shootingBook.id}) }}" class="btn btn-ok">
+                                    <i class="fa-solid fa-check"></i>
+                                </a>
+                                <a href="" class="btn btn-ko">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </a>
+                            {% endif %}
+                            {# <a class="btn btn-info" href=""><i class="fa-solid fa-feather"></i></a> #}
                         </td>
                     </tr>
                 {% endfor %}
             {% endfor %}
             </tbody>
         </table>
+        <h2>Accepted bookings</h2>
+        <div class="calendar"></div>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.onload = () => {
+            let calendarElement = document.querySelector(".calendar");
+            let calendar = new FullCalendar.Calendar(calendarElement, {
+                initialView: 'dayGridMonth',
+                locale: 'en',
+                timeZone: 'Europe/Paris',
+                headerToolbar: {
+                    start: 'prev next today',
+                    center: 'title',
+                    end: 'dayGridMonth timeGridWeek'
+                },
+                events: {{data | raw }},
+                eventColor: '#057a8f',
+                editable: true,
+                eventResizableFromStart: true,
+                
+            })
+
+            
+            calendar.render()
+        }
+    </script>
 {% endblock %}

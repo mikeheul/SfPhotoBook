@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\ShootingBook;
+use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ShootingBookController extends AbstractController
 {
@@ -14,8 +16,36 @@ class ShootingBookController extends AbstractController
      */
     public function index(ManagerRegistry $doctrine): Response
     {
-        return $this->render('shooting_book/index.html.twig', [
-            
-        ]);
+        $user = $doctrine->getRepository(User::class)->findOneBy(['id' => $this->getUser()]);
+
+        $rdvs = [];
+        foreach($user->getShootings() as $shooting) {
+            foreach($shooting->getShootingBooks() as $shootingBook) {
+                if($shootingBook->isIsAccepted()) {
+                    $rdvs[] = [
+                        'id' => $shootingBook->getId(),
+                        'title' => $shootingBook->getShooting()->getTitle(),
+                        'start' => $shootingBook->getStartDate()->format('Y-m-d H:i'),
+                        'end' => ($shootingBook->getEndDate() !== null) ? $shootingBook->getEndDate()->format('d-m-Y H:i'): "",
+                        'message' => $shootingBook->getMessage()
+                    ];
+                }
+            }
+        }
+
+        $data = json_encode($rdvs);
+        return $this->render('shooting_book/index.html.twig', compact('data'));
+    }
+
+    /**
+     * @Route("/shooting/book/accept/{id}", name="app_shooting_book_accept")
+     */
+    public function accept(ManagerRegistry $doctrine, ShootingBook $shootingBook): Response
+    {
+        $em = $doctrine->getManager();
+        $shootingBook->setIsAccepted(true);
+        $em->flush();
+
+        return $this->redirectToRoute('app_shooting_book');
     }
 }

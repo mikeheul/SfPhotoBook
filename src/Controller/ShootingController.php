@@ -161,6 +161,10 @@ class ShootingController extends AbstractController
             $shootingBook->setCreatedAt(new \DateTime());
             $shootingBook->setBookUser($this->getUser());
             $shootingBook->setShooting($shooting);
+            $shootingBook->setIsAccepted(false);
+
+            $package = $formBooking->get('packages')->getData();
+            $shootingBook->setPackage($package);
 
             $entityManager->persist($shootingBook);
             $entityManager->flush();

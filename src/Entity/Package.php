@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PackageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +39,16 @@ class Package
      * @ORM\JoinColumn(nullable=false)
      */
     private $shooting;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ShootingBook::class, mappedBy="package")
+     */
+    private $shootingBooks;
+
+    public function __construct()
+    {
+        $this->shootingBooks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -94,5 +106,35 @@ class Package
     public function __toString()
     {
         return $this->hours." h. - ".$this->nbPhotos." retouched photos - $ ".$this->price;
+    }
+
+    /**
+     * @return Collection<int, ShootingBook>
+     */
+    public function getShootingBooks(): Collection
+    {
+        return $this->shootingBooks;
+    }
+
+    public function addShootingBook(ShootingBook $shootingBook): self
+    {
+        if (!$this->shootingBooks->contains($shootingBook)) {
+            $this->shootingBooks[] = $shootingBook;
+            $shootingBook->setPackage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShootingBook(ShootingBook $shootingBook): self
+    {
+        if ($this->shootingBooks->removeElement($shootingBook)) {
+            // set the owning side to null (unless already changed)
+            if ($shootingBook->getPackage() === $this) {
+                $shootingBook->setPackage(null);
+            }
+        }
+
+        return $this;
     }
 }
