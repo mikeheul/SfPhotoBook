@@ -16,11 +16,11 @@ Symfony Application designed to offer photo shooting services (full custom CSS)
 
 Major features :
 - Shootings listing
-- Photo slider (SwiperJS)
+- Photo slider (SwiperJS library)
 - Likes system (AJAX)
 - Search bar (by name and price)
-- Pagination (KnpPaginator)
+- Pagination (KnpPaginator Bundle)
 - Photo gallery with lightbox
-- Comments (TinyMCE)
+- Comments (TinyMCE library)
 - Flash messages (Flashy Bundle)
-- Bookings view (FullCalendar)
+- Bookings view (FullCalendar Bundle)
