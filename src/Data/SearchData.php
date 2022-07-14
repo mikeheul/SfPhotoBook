@@ -6,4 +6,5 @@ class SearchData {
     public $q = '';
     public $max;
     public $min;
+    public $location;
 }

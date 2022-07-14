@@ -39,10 +39,12 @@ class ShootingBookFormType extends AbstractType
             ])
             ->add('startDate', DateType::class, [
                 'widget' => 'single_text',
-            ])
-            ->add('endDate', DateType::class, [
-                'widget' => 'single_text',
-                'required' => false,
+                'data' => new \DateTime()
+                ])
+                ->add('endDate', DateType::class, [
+                    'widget' => 'single_text',
+                    'required' => false,
+                    'data' => new \DateTime()
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'btn']

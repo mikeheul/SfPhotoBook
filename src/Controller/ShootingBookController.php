@@ -18,6 +18,18 @@ class ShootingBookController extends AbstractController
     {
         $user = $doctrine->getRepository(User::class)->findOneBy(['id' => $this->getUser()]);
 
+        $requests = [];
+        foreach($user->getShootings() as $shooting) {
+            foreach($shooting->getShootingBooks() as $shootingBook) {
+                $requests[] = $shootingBook;
+            }
+        }
+        usort($requests, function($a, $b) {
+            if ($a->getCreatedAt() == $b->getCreatedAt())
+                return (0);
+            return (($a->getCreatedAt() < $b->getCreatedAt()) ? 1 : -1);
+        });
+
         $rdvs = [];
         foreach($user->getShootings() as $shooting) {
             foreach($shooting->getShootingBooks() as $shootingBook) {
@@ -26,7 +38,7 @@ class ShootingBookController extends AbstractController
                         'id' => $shootingBook->getId(),
                         'title' => $shootingBook->getShooting()->getTitle(),
                         'start' => $shootingBook->getStartDate()->format('Y-m-d H:i'),
-                        'end' => ($shootingBook->getEndDate() !== null) ? $shootingBook->getEndDate()->format('d-m-Y H:i'): "",
+                        'end' => ($shootingBook->getEndDate() !== null) ? $shootingBook->getEndDate()->format('Y-m-d H:i'): "",
                         'message' => $shootingBook->getMessage()
                     ];
                 }
@@ -34,7 +46,9 @@ class ShootingBookController extends AbstractController
         }
 
         $data = json_encode($rdvs);
-        return $this->render('shooting_book/index.html.twig', compact('data'));
+        return $this->render('shooting_book/index.html.twig', 
+            compact('data', 'requests')
+        );
     }
 
     /**

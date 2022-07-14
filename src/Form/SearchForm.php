@@ -2,10 +2,12 @@
 
 use App\Data\SearchData;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\Country;
 
 class SearchForm extends AbstractType {
 
@@ -28,7 +30,11 @@ class SearchForm extends AbstractType {
                 'label' => false,
                 'required' => false,
                 'attr' => ['placeholder' => 'Max Price...', 'min' => 0]
-            ]);
+            ])
+            ->add('location', CountryType::class, [
+                'label' => false,
+            ])
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -190,15 +190,7 @@ section h2 {
   margin-top: 50px;
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  outline: none;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-}
-
-textarea {
+input, textarea, select {
   width: 100%;
   padding: 10px;
   outline: none;
@@ -472,7 +464,7 @@ label {
   align-items: center;
   gap: 10px;
 }
-.search .search-items input {
+.search .search-items input, .search .search-items select {
   display: inline-flex;
   width: 100%;
   margin: 0 20px 0 20px;

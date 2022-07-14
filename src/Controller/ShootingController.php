@@ -204,7 +204,8 @@ class ShootingController extends AbstractController
 
             return $this->json([
                 'code' => 200,
-                'message' => $flashy->success('Like well deleted !'),
+                // 'message' => $flashy->success('Like well deleted !'),
+                'message' => 'Like well deleted !',
                 'likes' => $sr->count(['shooting' => $shooting])
             ], 200);
         }
@@ -218,7 +219,8 @@ class ShootingController extends AbstractController
 
         return $this->json([
             'code' => 200, 
-            'message' => $flashy->success('Like added successfully !'),
+            // 'message' => $flashy->success('Like added successfully !'),
+            'message' => 'Like added successfully !',
             'likes' => $sr->count(['shooting' => $shooting])
         ], 200);
     }
