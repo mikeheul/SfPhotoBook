@@ -13,7 +13,7 @@
                     {# nbComments #}
                     <span><i class="fa-solid fa-comment-dots"></i> {{ shooting.shootingComments | length }} comment{{ plur }}</span><br>
                     {# photographe #}
-                    <span class="shooting-owner">By {{ shooting.owner.pseudo }}</span><br>
+                    <span class="shooting-owner">@{{ shooting.owner.pseudo }}</span><br>
                     {# description #}
                     <p class="shooting-description">
                         {% autoescape %}

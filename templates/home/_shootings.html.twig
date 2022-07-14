@@ -1,32 +1,34 @@
 {% for shooting in shootings %}
     <div class="shooting-myitem col-4">
-        <div class="shooting-myitem-image mySwiper">
-            <div class="swiper-wrapper">
-            {# Afficher une image par défaut si le shooting n'en contient pas  #}
-            {% if shooting.shootingImages | length > 0 %}
-                {% set class = (shooting.shootingImages | length == 1) ? "" : "swiper-slide" %}
-                {% for img in shooting.shootingImages %}
-                    <img class="{{ class }}" src="{{ asset('uploads/images/' ~ img.url) }}" alt="">
-                {% endfor %}
-            {% else %}
-                <img class="swiper-slide" src="{{ asset('img/not-available.jpg') }}" alt="">
-            {% endif %}
-            {# badge nouveau photographe (inscription -30 jours) #}
-            </div>
-        
-            {% if shooting.owner.isNew %}
-            <div class="new-photographer">
-                <i class="fa-solid fa-certificate" title="New Photographer !"></i>
-            </div>
-            {% endif %}
-            <div class="overlay"></div>
+        <a href="{{ path('show_shooting', {'id': shooting.id}) }}">
+            <div class="shooting-myitem-image mySwiper">
+                <div class="swiper-wrapper">
+                {# Afficher une image par défaut si le shooting n'en contient pas  #}
+                {% if shooting.shootingImages | length > 0 %}
+                    {% set class = (shooting.shootingImages | length == 1) ? "" : "swiper-slide" %}
+                    {% for img in shooting.shootingImages %}
+                        <img class="{{ class }}" src="{{ asset('uploads/images/' ~ img.url) }}" alt="">
+                    {% endfor %}
+                {% else %}
+                    <img class="swiper-slide" src="{{ asset('img/not-available.jpg') }}" alt="">
+                {% endif %}
+                {# badge nouveau photographe (inscription -30 jours) #}
+                </div>
+            
+                {% if shooting.owner.isNew %}
+                <div class="new-photographer">
+                    <i class="fa-solid fa-certificate" title="New Photographer !"></i>
+                </div>
+                {% endif %}
+                <div class="overlay"></div>
 
-            {% if shooting.shootingImages | length > 1 %}
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-pagination"></div>
-            {% endif %}
-        </div>
+                {% if shooting.shootingImages | length > 1 %}
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div>
+                {% endif %}
+            </div>
+        </a>
         {# Informations du shooting (titre, prix, likes, comments, packages) #}
         <div class="shooting-myitem-text">
             <div class="title-favorite">
