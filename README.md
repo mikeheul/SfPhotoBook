@@ -12,7 +12,7 @@
 
 # SfPhotoBook
 
-Symfony application designed to offer photo shooting services (full custom CSS)
+Symfony Application designed to offer photo shooting services (full custom CSS)
 
 Major features :
 - Shootings listing
