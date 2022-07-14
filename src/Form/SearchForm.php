@@ -33,6 +33,8 @@ class SearchForm extends AbstractType {
             ])
             ->add('location', CountryType::class, [
                 'label' => false,
+                'alpha3' => true,
+                'data' => 'FRA'
             ])
             ;
     }
