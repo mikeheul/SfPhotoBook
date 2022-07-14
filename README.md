@@ -23,3 +23,4 @@ Major features :
 - Photo gallery with lightbox
 - Comments (TinyMCE)
 - Flash messages (Flashy Bundle)
+- Bookings view (FullCalendar)
