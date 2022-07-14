@@ -74,19 +74,17 @@
         window.onload = () => {
             let calendarElement = document.querySelector(".calendar");
             let calendar = new FullCalendar.Calendar(calendarElement, {
-                initialView: 'dayGridMonth',
+                initialView: 'listMonth',
                 contentHeight: 700,
                 locale: 'en',
                 timeZone: 'Europe/Paris',
                 headerToolbar: {
                     start: 'prev next today',
                     center: 'title',
-                    end: 'dayGridMonth timeGridWeek'
+                    end: 'dayGridMonth timeGridWeek listMonth'
                 },
                 events: {{ data | raw }},
-                eventColor: '#10799f',   
-                /*eventBackgroundColor: '#000',
-                eventTextColor: '#fff'   */        
+                eventColor: '#10799f'          
             });
 
             calendar.render()
