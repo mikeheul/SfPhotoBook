@@ -79,6 +79,11 @@ class Shooting
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $localisation;
+
     public function __construct()
     {
         $this->shootingComments = new ArrayCollection();
@@ -321,5 +326,17 @@ class Shooting
             if($like->getUser() === $user) return true; 
         }
         return false;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(?string $localisation): self
+    {
+        $this->localisation = $localisation;
+
+        return $this;
     }
 }

@@ -11,7 +11,11 @@
                 <div class="user-shooting-item">
                     <a href="{{ path('show_shooting', {'id': shooting.id}) }}" >
                         <div class="user-shooting-item-img">
+                            {% if shooting.shootingImages | length > 0 %}
                             <img src="{{ asset('uploads/images/' ~ shooting.shootingImages[0].url) }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('img/not-available.jpg') }}" alt="">
+                        {% endif %}
                         </div>
                     </a>
                     <div class="user-shooting-item-text">

@@ -139,6 +139,18 @@ nav.logged {
 	background-position: center;
 	background-size: cover;
 }
+
+.logged.sticky {
+    position: fixed;
+	background: rgba(0, 0, 0, 0.913);
+    animation: fadenav 1s ease-in-out;
+}
+
+@keyframes fadenav {
+    0% { opacity: 0; }
+    100% { opacity: 1}
+}
+
 main {
 	min-height: 100vh;
 	display: flex;
@@ -418,7 +430,7 @@ label {
 		input, select {
 			display: inline-flex;
 			width: 100%;
-			margin: 0 20px 0 20px;
+			// margin: 0 20px 0 20px;
 		}
 		p {
 			text-align: left;
@@ -636,6 +648,7 @@ label {
 }
 .shooting-heading {
 	position: relative;
+	min-height: calc(100vh - 200px) ;
 	padding: 40px;
 	background: rgb(240, 240, 240);
 	border-radius: 5px;
@@ -644,6 +657,30 @@ label {
 	}
 	h2 {
 		margin-bottom: 0;
+	}
+	.shooting-content {
+		padding: 10px 50px 10px 0px;
+		text-align: justify;
+	}
+	.map-content {
+		position: absolute;
+		right: 0; top: 0;
+		width: 100%;
+		height: 100%;
+		iframe {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			filter: grayscale(0);
+    		// pointer-events: none;
+		}
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			// object-position: bottom;
+			// filter: grayscale(1);
+		}
 	}
 }
 .button-edit-shooting {
@@ -1073,6 +1110,16 @@ footer {
 	}
 }
 @media (max-width: 1150px) {
+	.col-2 {
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+	.shooting-heading .row {
+		flex-direction: column;
+		.map-content {
+			display: none;
+		}
+	}
 	.search {
 		transform: translateY(10%);
 		width: 100%;
@@ -1107,8 +1154,14 @@ footer {
 	}
 }
 @media (max-width: 850px) {
-	.heading-jumbo h1 {
-		font-size: 100%;
+	.heading-jumbo {
+		h1 {
+			font-size: 200%;
+		}
+		p {
+			padding: 0 20px;
+			text-align: center;
+		}
 	}
 	section {
 		padding-left: 40px;
