@@ -742,6 +742,7 @@ label {
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+  filter: grayscale(1);
 }
 
 .button-edit-shooting {
