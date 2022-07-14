@@ -39,7 +39,8 @@ class ShootingBookController extends AbstractController
                         'title' => $shootingBook->getShooting()->getTitle(),
                         'start' => $shootingBook->getStartDate()->format('Y-m-d H:i'),
                         'end' => ($shootingBook->getEndDate() !== null) ? $shootingBook->getEndDate()->format('Y-m-d H:i'): "",
-                        'message' => $shootingBook->getMessage()
+                        'message' => $shootingBook->getMessage(),
+                        'allDay' => true
                     ];
                 }
             }
