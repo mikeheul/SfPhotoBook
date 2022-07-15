@@ -481,7 +481,7 @@ label {
   box-shadow: rgba(0, 0, 0, 0.158) 0px 25px 20px -20px;
   z-index: 10;
 }
-.search h4 {
+.search h2 {
   text-align: center;
   margin-bottom: 20px;
 }

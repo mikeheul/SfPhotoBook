@@ -109,13 +109,8 @@ class ShootingController extends AbstractController
                      $shooting->addShootingImage($shootingImage);
                  }
  
-                 $shooting->setOwner($this->getUser());
-                 $shooting->setCreatedAt(new \DateTime());
-                 $entityManager->persist($shooting);
                  $entityManager->flush();
- 
-                 $confirm = ($edit) ? "updated" : "added";
-                 $flashy->success("Shooting well ". $confirm. " !");
+                 $flashy->success("Shooting well updated !");
  
                  return $this->redirectToRoute('show_shooting', ['id' => $shooting->getId()]);
              }
