@@ -28,20 +28,14 @@ class ShootingController extends AbstractController
     
     /**
      * @Route("/shooting/add", name="add_shooting")
-     * @Route("/shooting/{id}/edit", name="edit_shooting")
      */
     public function add(FlashyNotifier $flashy, ManagerRegistry $doctrine, Shooting $shooting = null, Request $request, SluggerInterface $slugger): Response
     {
-        // dd($this->isGranted("ROLE_ADMIN"));
-        $edit = true;
-        if($shooting && $shooting->getOwner() == $this->getUser() || $this->isGranted("ROLE_ADMIN")) {
+        if($this->getUser() && $this->isGranted("ROLE_PHOTOGRAPHER") || $this->isGranted("ROLE_ADMIN")) {
             
             $entityManager = $doctrine->getManager();
-            if(!$shooting) {
-                $shooting = new Shooting();
-                $edit = false;
-            }
-
+            $shooting = new Shooting();
+               
             $form = $this->createForm(ShootingType::class, $shooting);
             $form->handleRequest($request);
 
@@ -66,21 +60,76 @@ class ShootingController extends AbstractController
                 $entityManager->persist($shooting);
                 $entityManager->flush();
 
-                $confirm = ($edit) ? "updated" : "added";
-                $flashy->success("Shooting well ". $confirm. " !");
+                $flashy->success("Shooting well added !");
 
                 return $this->redirectToRoute('show_shooting', ['id' => $shooting->getId()]);
             }
+
+            return $this->render('shooting/add.html.twig', [
+                'formAddShooting' => $form->createView(),
+                'shooting' => $shooting,
+                'edit' => $shooting->getId()
+            ]);
+
         } else {
             $flashy->error("Not allowed !");
             return $this->redirectToRoute('app_home');
         }
-    
-        return $this->render('shooting/add.html.twig', [
-            'formAddShooting' => $form->createView(),
-            'shooting' => $shooting,
-            'edit' => $shooting->getId()
-        ]);
+    }
+
+    /**
+     * @Route("/shooting/{id}/edit", name="edit_shooting")
+     */
+    public function edit(FlashyNotifier $flashy, ManagerRegistry $doctrine, Shooting $shooting = null, Request $request, SluggerInterface $slugger): Response
+    {
+         $edit = true;
+         if($shooting && $shooting->getOwner() === $this->getUser() || $this->isGranted("ROLE_ADMIN")) {
+             $entityManager = $doctrine->getManager();
+             if(!$shooting) {
+                 $shooting = new Shooting();
+                 $edit = false;
+             }
+ 
+             $form = $this->createForm(ShootingType::class, $shooting);
+             $form->handleRequest($request);
+ 
+             if ($form->isSubmitted() && $form->isValid()) {
+ 
+                 $images = $form->get('shootingImages')->getData();
+                 
+                 foreach($images as $image) {
+                     $fichier = md5(uniqid()).'.'.$image->guessExtension();
+                     $image->move(
+                         $this->getParameter('images_directory'),
+                         $fichier
+                     );
+ 
+                     $shootingImage = new ShootingImages();
+                     $shootingImage->setUrl($fichier);
+                     $shooting->addShootingImage($shootingImage);
+                 }
+ 
+                 $shooting->setOwner($this->getUser());
+                 $shooting->setCreatedAt(new \DateTime());
+                 $entityManager->persist($shooting);
+                 $entityManager->flush();
+ 
+                 $confirm = ($edit) ? "updated" : "added";
+                 $flashy->success("Shooting well ". $confirm. " !");
+ 
+                 return $this->redirectToRoute('show_shooting', ['id' => $shooting->getId()]);
+             }
+ 
+             return $this->render('shooting/add.html.twig', [
+                 'formAddShooting' => $form->createView(),
+                 'shooting' => $shooting,
+                 'edit' => $shooting->getId()
+             ]);
+ 
+         } else {
+             $flashy->error("Not allowed !");
+             return $this->redirectToRoute('app_home');
+         }
     }
 
     /**
