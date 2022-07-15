@@ -682,7 +682,7 @@ label {
 			height: 100%;
 			object-fit: cover;
 			// object-position: bottom;
-			filter: grayscale(1);
+			filter: grayscale(0);
 		}
 		// .overlay {
 		// 	position: absolute;
@@ -911,6 +911,21 @@ label {
 	align-items: center;
 	justify-content: center;
 	color: #fff;
+	h1 {
+		z-index: 1;
+	}
+	.overlay-bottom {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		background: rgb(16, 15, 15);
+		background: linear-gradient(0deg, rgb(16, 15, 15) 0%, rgba(0,0,0,0) 80%);
+		transition: 0.5s;
+		opacity: 1;
+		z-index: 0;
+	}
 }
 .parallax-bg1 {
 	background-image: url(../img/parallax.jpg);
