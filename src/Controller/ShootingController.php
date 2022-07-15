@@ -130,6 +130,44 @@ class ShootingController extends AbstractController
     }
 
     /**
+     * @Route("delete_package/{id}", name="delete_package_shooting")
+     */
+    public function deletePackage(FlashyNotifier $flashy, ManagerRegistry $doctrine, Package $package) {
+
+        if($package->getShooting()->getOwner() === $this->getUser()) {
+            $shootingBooks = $doctrine->getRepository(ShootingBook::class)->findBy(['package' => $package]);
+            $em = $doctrine->getManager();
+            foreach($shootingBooks as $shootingBook) {
+                $shootingBook->setPackage(null);
+            }
+            $em->remove($package);
+            $em->flush();
+    
+            return $this->redirectToRoute('show_shooting', ['id' => $package->getShooting()->getId()]);
+        } else {
+            $flashy->error('Unauthorized action !');
+            return $this->redirectToRoute('app_home');
+        }
+    }
+
+    /**
+     * @Route("shooting/comment/delete/{id}", name="delete_shooting_comment")
+     */
+    public function deleteComment(FlashyNotifier $flashy, ManagerRegistry $doctrine, ShootingComments $comment)
+    {
+        if($comment->getUserComment() === $this->getUser()) {
+            $em = $doctrine->getManager();
+            $em->remove($comment);
+            $em->flush();
+    
+            return $this->redirectToRoute('show_shooting', ['id' => $comment->getShootingComment()->getId()]);
+        } else {
+            $flashy->error('Unauthorized action !');
+            return $this->redirectToRoute('app_home');
+        }
+    }
+
+    /**
      * @Route("/shooting/{id}", name="show_shooting")
      */
     public function show(ManagerRegistry $doctrine, Shooting $shooting, Request $request): Response

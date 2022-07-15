@@ -98,7 +98,7 @@
                     {% if app.user == shooting.owner %}
                     <div class="edit-delete">
                         <a href=""><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href=""><i class="fa-solid fa-trash-can"></i></a>
+                        <a href="{{ path('delete_package_shooting', {'id': package.id}) }}"><i class="fa-solid fa-trash-can"></i></a>
                     </div>   
                     {% endif %}
                 </div>
@@ -122,7 +122,7 @@
                         {# Editer si auteur du message #}
                         {% if comment.userComment.id == app.user.id %}
                         <div class="comment-edit">
-                            <a href=""><ion-icon name="close-circle-outline"></ion-icon></ion-icon></a>
+                            <a href="{{ path('delete_shooting_comment', {'id': comment.id}) }}"><ion-icon name="close-circle-outline"></ion-icon></a>
                         </div>
                         {% endif %} <br>
                     </h4>
