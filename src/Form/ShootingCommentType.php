@@ -19,7 +19,7 @@ class ShootingCommentType extends AbstractType
                 'attr' => [
                     'rows' => 10
                 ],
-                'required' => false
+                'required' => true
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'btn']

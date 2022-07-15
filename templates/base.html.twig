@@ -86,7 +86,12 @@
         <script>
             tinymce.init({
                 selector: 'textarea',
-                themes: 'modern'
+                themes: 'modern',
+                setup: function (editor) {
+                    editor.on('change', function (e) {
+                        editor.save();
+                    });
+                }
             });
         </script>
         

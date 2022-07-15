@@ -536,6 +536,7 @@ label {
 
 .shootings {
   padding-top: 40px;
+  padding-bottom: 40px;
 }
 .shootings h1 {
   font-size: 50px;
@@ -1179,6 +1180,45 @@ footer p {
 
 .swiper-pagination-bullet {
   background: #ffffff;
+}
+
+.services-section {
+  padding: 80px 80px;
+}
+.services-section h1 {
+  font-size: 50px;
+  color: rgb(88, 88, 88);
+  border: none;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.services {
+  text-align: center;
+}
+.services .row {
+  display: flex;
+  gap: 15px;
+}
+.services .row .service {
+  border: 1px solid rgb(222, 222, 222);
+  padding: 10px 50px;
+  border-radius: 20px;
+  box-shadow: rgba(50, 50, 93, 0.116) 0px 50px 100px -20px, rgba(0, 0, 0, 0.126) 0px 30px 60px -30px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+}
+.services .row .service:hover {
+  transform: translateY(-10px);
+}
+.services .row .service i {
+  font-size: 50px;
+  margin-bottom: 10px;
+  color: rgb(24, 126, 142);
 }
 
 @media (max-width: 1120px) {

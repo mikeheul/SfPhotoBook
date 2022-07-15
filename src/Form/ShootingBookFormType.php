@@ -24,7 +24,10 @@ class ShootingBookFormType extends AbstractType
     {
         $builder
             ->add('packages', EntityType::class, [
-                'attr' => ['class' => 'select'],
+                'attr' => [
+                    'class' => 'select',
+                    'required' => true,
+                ],
                 'mapped' => false,
                 'class' => Package::class,
                 'query_builder' => function (PackageRepository $pr) use ($options) {
@@ -33,18 +36,22 @@ class ShootingBookFormType extends AbstractType
             ])
             ->add('message', TextareaType::class, [
                 'attr' => [
-                    'rows' => 10
+                    'rows' => 10,
+                    'required' => true,
                 ],
                 'required' => false
             ])
             ->add('startDate', DateType::class, [
+                'attr' => [
+                    'required' => true,
+                ],
                 'widget' => 'single_text',
                 'data' => new \DateTime()
                 ])
-                ->add('endDate', DateType::class, [
-                    'widget' => 'single_text',
-                    'required' => false,
-                    'data' => new \DateTime()
+            ->add('endDate', DateType::class, [
+                'widget' => 'single_text',
+                'required' => false,
+                'data' => new \DateTime()
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => ['class' => 'btn']

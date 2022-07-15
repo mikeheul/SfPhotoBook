@@ -82,24 +82,28 @@
         {# packages #}
         <h2>Packages</h2>
         <div class="packages">
-            {# Afficher les packages #}
-            {% for package in shooting.packages %}
-            <div class="package-item">
-                {# nbHours #}
-                <h3>{{ package.hours }}h</h3>
-                {# nbPhotos #}
-                <p>{{ package.nbPhotos }} retouched photos</p>
-                {# price #}
-                <p class="price">$ {{ package.price }}</p>
-                {# Droits d'édition / suppression du package #}
-                {% if app.user == shooting.owner %}
-                <div class="edit-delete">
-                    <a href=""><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href=""><i class="fa-solid fa-trash-can"></i></a>
-                </div>   
-                {% endif %}
-            </div>
-            {% endfor %}
+            {% if shooting.packages | length == 0 %}
+                <p>No packages...</p>
+            {% else %}
+                {# Afficher les packages #}
+                {% for package in shooting.packages %}
+                <div class="package-item">
+                    {# nbHours #}
+                    <h3>{{ package.hours }}h</h3>
+                    {# nbPhotos #}
+                    <p>{{ package.nbPhotos }} retouched photos</p>
+                    {# price #}
+                    <p class="price">$ {{ package.price }}</p>
+                    {# Droits d'édition / suppression du package #}
+                    {% if app.user == shooting.owner %}
+                    <div class="edit-delete">
+                        <a href=""><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href=""><i class="fa-solid fa-trash-can"></i></a>
+                    </div>   
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% endif %} 
         </div>
     
         {# comments #}
