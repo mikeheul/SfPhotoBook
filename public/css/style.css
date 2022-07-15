@@ -1023,7 +1023,7 @@ label {
 
 .user-shooting-item {
   position: relative;
-  width: 250px;
+  width: 320px;
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.792) 0px 25px 20px -20px;
   cursor: pointer;
