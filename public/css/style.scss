@@ -1148,11 +1148,16 @@ footer {
 		transition: .5s;
 			&:hover {
 				transform: translateY(-10px);
+				ion-icon {
+					filter: grayscale(0);
+				}
 			}
 		ion-icon {
 			font-size: 50px;
 			margin-bottom: 10px;
-			color:rgb(24, 126, 142)
+			color:rgb(24, 126, 142);
+			filter: grayscale(1);
+			transition: .5s;
 		}
 	}
 }
