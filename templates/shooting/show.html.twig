@@ -38,10 +38,10 @@
             </div>
             
             <div class="row">
-                {% if app.user == shooting.owner %}
+                {% if app.user == shooting.owner or is_granted("ROLE_ADMIN") %}
                 <div class="button-edit-shooting">
                     <a href="{{ path('edit_shooting', {'id': shooting.id}) }}">Edit</a>
-                    <a href="{{ path('add_package_shooting', {'id': shooting.id}) }}">Add package</a>
+                    <a href="{{ path('add_package_shooting', {'shooting_id': shooting.id}) }}">Add package</a>
                 </div>
                 {% endif %}
                 

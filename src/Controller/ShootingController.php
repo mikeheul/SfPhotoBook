@@ -153,7 +153,7 @@ class ShootingController extends AbstractController
     }
 
     /**
-     * @Route("add_package/{id}", name="add_package_shooting")
+     * @Route("add_package/{shooting_id}", name="add_package_shooting")
      * @Route("edit_package/{shooting_id}/{package_id}", name="edit_package_shooting")
      * @ParamConverter("package", options={"mapping": {"package_id": "id"}})
      * @ParamConverter("shooting", options={"mapping": {"shooting_id": "id"}})
