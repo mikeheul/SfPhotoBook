@@ -36,6 +36,9 @@ security:
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }
 
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_PHOTOHRAPHER, ROLE_USER
+
 when@test:
     security:
         password_hashers:

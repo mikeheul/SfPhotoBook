@@ -5,7 +5,13 @@
 {% block body %}
 
 <section class="">
-    <h1>Add a package in « {{ shooting.title }} »</h1>
+
+    {% if editMode %}
+        <h1>Edit a package in « {{ shooting.title }} »</h1>    
+    {% else %}
+        <h1>Add a package in « {{ shooting.title }} »</h1>
+    {% endif %}
+
     {{ form(formAddPackageShooting) }}
 
 {% endblock %}

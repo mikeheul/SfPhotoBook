@@ -139,6 +139,10 @@ nav .links ul li a {
   text-decoration: none;
   color: #fff;
 }
+nav .links .admin_link {
+  padding: 10px 40px;
+  background: #F55050;
+}
 nav .username {
   position: absolute;
   left: 50%;
@@ -1227,8 +1231,14 @@ footer p {
   align-items: center;
   transition: 0.5s;
 }
+.services .row .service p strong {
+  transition: 0.5s;
+}
 .services .row .service:hover {
   transform: translateY(-10px);
+}
+.services .row .service:hover p strong {
+  color: rgb(24, 126, 142);
 }
 .services .row .service:hover ion-icon {
   filter: grayscale(0);

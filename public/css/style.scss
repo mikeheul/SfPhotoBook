@@ -115,6 +115,10 @@ nav {
 				}
 			}
 		}
+		.admin_link {
+			padding: 10px 40px;
+			background: #F55050;
+		}
 	}
 	.username {
 		position: absolute;
@@ -1146,8 +1150,14 @@ footer {
 		justify-content: center;
 		align-items: center;
 		transition: .5s;
+		p strong {
+			transition: .5s;
+		}
 			&:hover {
 				transform: translateY(-10px);
+				p strong {
+					color: rgb(24, 126, 142);
+				}
 				ion-icon {
 					filter: grayscale(0);
 				}

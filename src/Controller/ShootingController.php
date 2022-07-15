@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Package;
 use App\Entity\Shooting;
 use App\Form\PackageType;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ShootingController extends AbstractController
 {
@@ -30,22 +32,21 @@ class ShootingController extends AbstractController
      */
     public function add(FlashyNotifier $flashy, ManagerRegistry $doctrine, Shooting $shooting = null, Request $request, SluggerInterface $slugger): Response
     {
+        // dd($this->isGranted("ROLE_ADMIN"));
         $edit = true;
-        if($shooting && $shooting->getOwner() !== $this->getUser()) {
-            $flashy->error("Not allowed !");
-            return $this->redirectToRoute('app_home');
-        } else {
+        if($shooting && $shooting->getOwner() == $this->getUser() || $this->isGranted("ROLE_ADMIN")) {
+            
             $entityManager = $doctrine->getManager();
             if(!$shooting) {
                 $shooting = new Shooting();
                 $edit = false;
             }
-    
+
             $form = $this->createForm(ShootingType::class, $shooting);
             $form->handleRequest($request);
-    
+
             if ($form->isSubmitted() && $form->isValid()) {
-    
+
                 $images = $form->get('shootingImages')->getData();
                 
                 foreach($images as $image) {
@@ -54,12 +55,12 @@ class ShootingController extends AbstractController
                         $this->getParameter('images_directory'),
                         $fichier
                     );
-    
+
                     $shootingImage = new ShootingImages();
                     $shootingImage->setUrl($fichier);
                     $shooting->addShootingImage($shootingImage);
                 }
-    
+
                 $shooting->setOwner($this->getUser());
                 $shooting->setCreatedAt(new \DateTime());
                 $entityManager->persist($shooting);
@@ -67,16 +68,19 @@ class ShootingController extends AbstractController
 
                 $confirm = ($edit) ? "updated" : "added";
                 $flashy->success("Shooting well ". $confirm. " !");
-    
+
                 return $this->redirectToRoute('show_shooting', ['id' => $shooting->getId()]);
             }
-    
-            return $this->render('shooting/add.html.twig', [
-                'formAddShooting' => $form->createView(),
-                'shooting' => $shooting,
-                'edit' => $shooting->getId()
-            ]);
+        } else {
+            $flashy->error("Not allowed !");
+            return $this->redirectToRoute('app_home');
         }
+    
+        return $this->render('shooting/add.html.twig', [
+            'formAddShooting' => $form->createView(),
+            'shooting' => $shooting,
+            'edit' => $shooting->getId()
+        ]);
     }
 
     /**
@@ -101,14 +105,20 @@ class ShootingController extends AbstractController
 
     /**
      * @Route("add_package/{id}", name="add_package_shooting")
+     * @Route("edit_package/{shooting_id}/{package_id}", name="edit_package_shooting")
+     * @ParamConverter("package", options={"mapping": {"package_id": "id"}})
+     * @ParamConverter("shooting", options={"mapping": {"shooting_id": "id"}})
      */
-    public function addPackage(FlashyNotifier $flashy, ManagerRegistry $doctrine, Shooting $shooting, Request $request) {
+    public function addPackage(FlashyNotifier $flashy, ManagerRegistry $doctrine, Shooting $shooting, Package $package = null, Request $request) {
 
         if($shooting->getOwner() !== $this->getUser()) {
             $flashy->error('Unauthorized action !');
             return $this->redirectToRoute('app_home');
         } else {
-            $package = new Package();
+
+            if(!$package){
+                $package = new Package();
+            }
             $form = $this->createForm(PackageType::class, $package);
             $form->handleRequest($request);
         
@@ -124,7 +134,8 @@ class ShootingController extends AbstractController
 
             return $this->render('shooting/add_package_shooting.html.twig', [
                 "formAddPackageShooting" => $form->createView(),
-                "shooting" => $shooting
+                "shooting" => $shooting,
+                "editMode" => $package->getId()
             ]);
         }
     }
