@@ -6,6 +6,7 @@ use App\Data\SearchData;
 use App\Entity\Shooting;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Mapping\OrderBy;
 
 /**
  * @extends ServiceEntityRepository<Shooting>
@@ -61,7 +62,7 @@ class ShootingRepository extends ServiceEntityRepository
         } 
 
         $query = $query
-            ->andWhere('s.isActive = 1');
+            ->andWhere('s.isActive = 1'); 
 
         return $query->getQuery()->getResult();
     }

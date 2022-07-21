@@ -339,4 +339,9 @@ class Shooting
 
         return $this;
     }
+
+    public function getAverage() {
+        $this->average = $this->id / 5;
+        return $this->average;
+    }
 }

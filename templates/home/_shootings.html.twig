@@ -1,4 +1,4 @@
-{% for shooting in shootings %}
+{% for shooting in shootings | sort((a, b) => a.average <=> b.average)%}
     <div class="shooting-myitem col-4">
 
         <a href="{{ path('show_shooting', {'id': shooting.id}) }}">
@@ -50,7 +50,6 @@
                             {{ shooting.shootingLikes | length }}
                         </span>
                     </a>
-                    
                     {# count Comments #}
                     <a href="">
                         <i class="fa-solid fa-comment-dots"></i> {{ shooting.shootingComments | length }}
