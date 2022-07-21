@@ -1,4 +1,4 @@
-{% for shooting in shootings | sort((a, b) => a.average <=> b.average)%}
+{% for shooting in shootings %}
     <div class="shooting-myitem col-4">
 
         <a href="{{ path('show_shooting', {'id': shooting.id}) }}">
