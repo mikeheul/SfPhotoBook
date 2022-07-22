@@ -24,5 +24,5 @@ Major features :
 - Comments (TinyMCE library)
 - Flash messages (Flashy Bundle)
 - Bookings view (FullCalendar Bundle)
-- Animaiton homepage (ScrollReveal JS library)
+- Animation homepage (ScrollReveal JS library)
 
