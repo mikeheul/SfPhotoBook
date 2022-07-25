@@ -46,12 +46,12 @@ class ShootingBookController extends AbstractController
             }
         }
 
-        array_push($rdvs, [
-            'start' => '2022-07-15',
-            'end' => '2022-07-20',
-            'display' => 'background',
-            'color' => 'red',
-        ]);
+        // array_push($rdvs, [
+        //     'start' => '2022-07-15',
+        //     'end' => '2022-07-20',
+        //     'display' => 'background',
+        //     'color' => 'red',
+        // ]);
 
         $data = json_encode($rdvs);
         return $this->render('shooting_book/index.html.twig', 
