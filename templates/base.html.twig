@@ -18,6 +18,7 @@
     <body>
         <header>
             {% set class = (app.user) ? "logged" : "" %}
+            <!-- Navbar -->
             <nav class="{{ class }}">
                 <div class="logo">
                     <a href="{{ path('app_home') }}">           
@@ -46,7 +47,7 @@
                     {% endif %} 
                 </div>
                 
-                <!-- Menu burger -->
+                <!-- Burger -->
                 <div class="burger"><i class="fa-solid fa-burger"></i></div>
                 <div id="myNav" class="menuOverlay">
                     <a href="javascript:void(0)" class="closebtn">&times;</a>
@@ -67,10 +68,12 @@
             </nav>
         </header>
 
+        <!-- Main block -->
         <main>
             {% block body %}{% endblock %}
         </main>
         
+        <!-- Footer -->
         {% if app.user %}
         <footer>
             <p>&copy; Micka - PhotoBook</p>
