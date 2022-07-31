@@ -17,7 +17,7 @@ Symfony Application designed to offer photo shooting services (full custom CSS)
 Major features :
 - Shootings listing
 - Photo slider (SwiperJS library)
-- Likes system (AJAX)
+- Likes system / view-hide shooting (AJAX)
 - Search bar (by name and price)
 - Pagination (KnpPaginator Bundle)
 - Photo gallery with lightbox
